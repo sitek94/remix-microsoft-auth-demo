@@ -1,50 +1,47 @@
-# Welcome to Remix!
+# Remix + MSAL + Roles
 
-- [Remix Docs](https://remix.run/docs)
+The most time I spent figuring out how to setup user groups and roles in Azure AD (now Microsoft Entra).
+
+For the Remix part I followed the examples below:
+
+- https://github.com/sergiodxa/remix-auth
+- https://github.com/juhanakristian/remix-auth-microsoft
+
+Then added some code to extract the roles from the token:
+
+```ts
+const microsoftStrategy = new MicrosoftStrategy(
+  {
+    clientId: process.env.MSAL_CLIENT_ID!,
+    clientSecret: process.env.MSAL_CLIENT_SECRET!,
+    redirectUri: process.env.MSAL_REDIRECT_URI!,
+    tenantId: process.env.MSAL_TENANT_ID!,
+  },
+  async ({extraParams, profile}) => {
+    // 👇 Extract the roles from the token
+    const {roles} = jwt.decode(extraParams.id_token) as {roles: UserRole[]}
+
+    return {id: profile.id, name: profile.displayName, roles}
+  },
+)
+```
 
 ## Development
 
-From your terminal:
+Register your app in Azure AD and fill `.env` file
 
 ```sh
-npm run dev
+cp .env.example .env
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
-
-## Deployment
-
-First, build your app for production:
+Install dependencies
 
 ```sh
-npm run build
+bun install
 ```
 
-Then run the app in production mode:
+Start app
 
 ```sh
-npm start
+bun dev
 ```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
-
-
-## Microsoft Entra
-
-- Register app
-  - Get client id, client secret, tenant id, and redirect uri
-- Create user groups (tenant wide)
-  - LibraryAdmin
-  - LibraryStaff
-  - LibraryUser
-- Fill .env file
-- 

@@ -4,7 +4,7 @@ import {sessionStorage} from '~/services/session.server'
 import jwt from 'jsonwebtoken'
 import type {User, UserRole} from '~/types/user'
 
-export const authenticator = new Authenticator<User>(sessionStorage) //User is a custom user types you can define as you want
+export const authenticator = new Authenticator<User>(sessionStorage)
 
 const microsoftStrategy = new MicrosoftStrategy(
   {
