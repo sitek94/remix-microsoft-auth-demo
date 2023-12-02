@@ -36,3 +36,15 @@ Make sure to deploy the output of `remix build`
 
 - `build/`
 - `public/build/`
+
+
+## Microsoft Entra
+
+- Register app
+  - Get client id, client secret, tenant id, and redirect uri
+- Create user groups (tenant wide)
+  - LibraryAdmin
+  - LibraryStaff
+  - LibraryUser
+- Fill .env file
+- 
